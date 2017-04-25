@@ -1,9 +1,10 @@
 import { actionTypes } from '../utils/constants';
+import { set } from '../utils/objUtil';
 
 const defaultVoxels = {
   at: {
     '-4': {
-      0.5: {
+      0: {
         '-1': {
           color: 'red'
         },
@@ -21,7 +22,8 @@ const defaultVoxels = {
 export default function voxels(voxels = defaultVoxels, action) {
   switch(action.type) {
     case actionTypes.ADD_VOXEL:
-      console.log(action);
+      console.log(action.event.detail.intersection);
+      return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, action.voxelOptions);
       return voxels;
     default:
       return voxels;
@@ -33,6 +35,6 @@ export function getVoxels(voxels) { //have to do some crazy array stuff to get a
       [].concat(...Object.keys(voxels.at[layer]).map((row) =>
         [].concat(...Object.keys(voxels.at[layer][row]).map((voxel) => ({
           ...voxels.at[layer][row][voxel],
-          position: `${parseFloat(voxel)} ${parseFloat(row)} ${parseFloat(layer)}`
+          position: `${parseFloat(voxel) + 0.5} ${parseFloat(row) + 0.5} ${parseFloat(layer) - 0.5}`
         })))))));
 }
