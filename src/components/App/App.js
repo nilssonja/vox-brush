@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Voxel from '../Voxel/Voxel';
 import { getVoxels } from '../../reducers/voxelReducer';
 import toolActions from '../../actions/toolActions';
-import ViveControllers from '../ViveControllers/ViveControllers';
+import ViveControllers from '../TrackedControllers/TrackedControllers';
 import { connect } from 'react-redux';
 import 'aframe';
 import './App.css';

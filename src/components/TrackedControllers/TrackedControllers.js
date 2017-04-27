@@ -15,10 +15,10 @@ class ViveControllers extends Component {
   render() {
     return (
       <a-entity>
-        <a-entity id="rightViveController" vive-controls="hand: right" ref={this.registerController.bind(this)}>
-          <a-box></a-box>
-        </a-entity>
-        <a-entity id="leftViveController" vive-controls="hand: left"></a-entity>
+        <a-entity vive-controls="hand: right" ref={this.registerController.bind(this)}></a-entity>
+        <a-entity vive-controls="hand: left"></a-entity>
+        <a-entity oculus-touch-controls="hand: left"></a-entity>
+        <a-entity oculus-touch-controls="hand: right" ref={this.registerController.bind(this)}></a-entity>
       </a-entity>
     );
   }
