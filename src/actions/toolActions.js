@@ -18,9 +18,22 @@ const addVoxel = (event, voxelOptions) => {
   }
 };
 
+const updateVoxel = (event, voxelOptions) => {
+  const pos = event.target.getAttribute('position');
+  return {
+    type: actionTypes.UPDATE_VOXEL,
+    event,
+    voxelOptions: { ...voxelOptions, color: 'blue' },
+    x: Math.floor(pos.x),
+    y: Math.floor(pos.y),
+    z: Math.floor(pos.z)
+  }
+};
+
 
 const toolActions = {
-  [actionTypes.ADD_VOXEL]: addVoxel
+  [actionTypes.ADD_VOXEL]: addVoxel,
+  [actionTypes.UPDATE_VOXEL]: updateVoxel
 };
 
 export default toolActions;

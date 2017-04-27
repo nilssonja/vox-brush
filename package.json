@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "dependencies": {
     "aframe": "^0.5.0",
+    "aframe-controller-cursor-component": "^0.2.6",
+    "d3": "^4.8.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",

@@ -24,7 +24,8 @@ export default function voxels(voxels = defaultVoxels, action) {
     case actionTypes.ADD_VOXEL:
       console.log(action.event.detail.intersection);
       return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, action.voxelOptions);
-      return voxels;
+    case actionTypes.UPDATE_VOXEL:
+      return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, action.voxelOptions);
     default:
       return voxels;
   }
