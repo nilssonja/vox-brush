@@ -23,7 +23,7 @@ const updateVoxel = (event, voxelOptions) => {
   return {
     type: actionTypes.UPDATE_VOXEL,
     event,
-    voxelOptions: { ...voxelOptions, color: 'blue' },
+    voxelOptions: { ...voxelOptions},
     x: Math.floor(pos.x),
     y: Math.floor(pos.y),
     z: Math.floor(pos.z)

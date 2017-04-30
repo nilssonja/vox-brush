@@ -6,6 +6,10 @@ const defaultTools = {
 
 export default function tools(tools = defaultTools, action) {
   switch(action.type) {
+    case actionTypes.SELECT_TOOL:
+      return {
+        selectedTool: action.selectedTool
+      };
     default:
       return tools;
   }

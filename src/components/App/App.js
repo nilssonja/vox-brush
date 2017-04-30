@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Voxel from '../Voxel/Voxel';
 import { getVoxels } from '../../reducers/voxelReducer';
 import toolActions from '../../actions/toolActions';
-import ViveControllers from '../TrackedControllers/TrackedControllers';
+import TrackedControllers from '../TrackedControllers/TrackedControllers';
 import { connect } from 'react-redux';
 import 'aframe';
 import './App.css';
@@ -15,8 +15,8 @@ class App extends Component {
   render() {
     return (
       <a-scene style={{position: 'absolute', height: '100%', width: '100%'}} inspector stats>
-        <ViveControllers/>
-        <a-sky color="#FFF"/>
+        <TrackedControllers/>
+        <a-sky color="#999"/>
         <a-plane color="black" onClick={this.clickHandler.bind(this)} rotation="-90 0 0" scale="100 100 0"/>
         {
           getVoxels(this.props.voxels).map((voxelOptions, index) => <Voxel { ...voxelOptions } key={ index } />)
