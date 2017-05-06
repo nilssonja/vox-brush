@@ -32,8 +32,16 @@ class ColorPicker extends Component {
     let intersectionPoint = event.detail.intersection.point;
     let objectPosition = event.detail.intersection.object.getWorldPosition();
     let objectScale = event.detail.intersection.object.getWorldScale();
-    console.log(event.detail);
-    console.log(objectPosition, objectScale);
+    console.log(objectPosition);
+    let verts = event.detail.intersection.object.geometry.attributes.position.array
+    let firstVertArray = verts.slice(0,3);
+    let firstVertVector = new THREE.Vector3(...firstVertArray);
+    console.log(firstVertVector);
+    firstVertVector.multiply(objectScale);
+    firstVertVector.applyQuaternion(event.detail.intersection.object.getWorldQuaternion());
+    firstVertVector.add(objectPosition);
+    console.log(firstVertVector);
+
   };
 
   render() {
