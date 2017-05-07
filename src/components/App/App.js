@@ -21,10 +21,12 @@ class App extends Component {
         {
           getVoxels(this.props.voxels).map((voxelOptions, index) => <Voxel { ...voxelOptions } key={ index } />)
         }
-        <a-camera cursor
-                  position="0 0 -1"
-                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-                  material="color: black; shader: flat">
+        <a-camera cursor >
+          <a-entity
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.001; radiusOuter: 0.01"
+            material="color: black; shader: flat"
+          />
         </a-camera>
       </a-scene>
     );
