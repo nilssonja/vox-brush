@@ -5,16 +5,15 @@ const addVoxel = (event, voxelOptions) => {
   // we should probably do some calculation stuff here and return an object with more specific information
   // so that we don't have to write the calculation in the reducer for every tool action we might have.
   const normal = event.detail.intersection.face.normal;
-  const point = event.detail.intersection.point;
+  const point = event.detail.intersection.object.getWorldPosition();
   const newPos = getAxialVector(point, normal);
-  console.log(newPos);
   return {
     type: actionTypes.ADD_VOXEL,
     event,
-    voxelOptions,
-    x: Math.floor(newPos.x),
-    y: Math.floor(newPos.y),
-    z: Math.floor(newPos.z)
+    voxelOptions: { ...voxelOptions },
+    x: newPos.x,
+    y: newPos.y,
+    z: newPos.z
   }
 };
 
@@ -24,9 +23,9 @@ const updateVoxel = (event, voxelOptions) => {
     type: actionTypes.UPDATE_VOXEL,
     event,
     voxelOptions: { ...voxelOptions},
-    x: Math.floor(pos.x),
-    y: Math.floor(pos.y),
-    z: Math.floor(pos.z)
+    x: pos.x,
+    y: pos.y,
+    z: pos.z
   }
 };
 
@@ -38,9 +37,9 @@ const toolActions = {
 
 export default toolActions;
 
-var getAxialVector = function(targetPos, normal){
-  var center = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
-  var normal = new THREE.Vector3(normal.x, normal.y, normal.z);
+const getAxialVector = function(targetPos, normal){
+  let center = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+  let normal = new THREE.Vector3(normal.x, normal.y, normal.z);
   center.addVectors(center, normal);
   return { x:center.x, y:center.y, z:center.z };
 };

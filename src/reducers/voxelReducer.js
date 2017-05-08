@@ -36,6 +36,6 @@ export function getVoxels(voxels) { //have to do some crazy array stuff to get a
       [].concat(...Object.keys(voxels.at[layer]).map((row) =>
         [].concat(...Object.keys(voxels.at[layer][row]).map((voxel) => ({
           ...voxels.at[layer][row][voxel],
-          position: `${parseFloat(voxel) + 0.5} ${parseFloat(row) + 0.5} ${parseFloat(layer) - 0.5}`
+          position: `${parseFloat(voxel)} ${parseFloat(row)} ${parseFloat(layer)}`
         })))))));
 }
