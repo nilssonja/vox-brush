@@ -29,17 +29,24 @@ const updateVoxel = (event, voxelOptions) => {
   }
 };
 
+const updateVoxelOptions = (voxelOptions) => {
+  return {
+    type: actionTypes.UPDATE_VOXEL_OPTIONS,
+    voxelOptions: { ...voxelOptions }
+  }
+};
+
 
 const toolActions = {
   [actionTypes.ADD_VOXEL]: addVoxel,
-  [actionTypes.UPDATE_VOXEL]: updateVoxel
+  [actionTypes.UPDATE_VOXEL]: updateVoxel,
+  [actionTypes.UPDATE_VOXEL_OPTIONS]: updateVoxelOptions
 };
 
 export default toolActions;
 
 const getAxialVector = function(targetPos, normal){
   let center = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
-  let normal = new THREE.Vector3(normal.x, normal.y, normal.z);
   center.addVectors(center, normal);
   return { x:center.x, y:center.y, z:center.z };
 };

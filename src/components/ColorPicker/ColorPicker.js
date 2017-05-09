@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import * as THREE from 'three';
 import 'aframe';
+import { connect } from 'react-redux';
+import menuActions from '../../actions/menuActions';
+import toolActions from '../../actions/toolActions';
+import { actionTypes } from '../../utils/constants';
 import { getCanvasPosition, getColorFromCanvas } from '../../utils/utils';
 
 const getColor = ["#f00","#0f0","#00f","#fff"];
@@ -9,7 +13,8 @@ class ColorPicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedColor: new THREE.Color()
+      menuAction: props.menuAction,
+      selectedColor: props.selectedColor ? props.selectedColor : new THREE.Color()
     }
   }
   registerHueTool(element) {
@@ -61,7 +66,10 @@ class ColorPicker extends Component {
       event.detail.intersection.object,
       this.hueCanvas
     );
-    this.setState({selectedColor: getColorFromCanvas(x, y, this.hueCanvas)});
+    this.state.menuAction(event, actionTypes.UPDATE_VOXEL);
+    let selectedColor = getColorFromCanvas(x, y, this.hueCanvas);
+    this.setState({selectedColor});
+    this.props.changeColor(selectedColor);
   };
 
   selectSaturation(event) {
@@ -70,7 +78,9 @@ class ColorPicker extends Component {
       event.detail.intersection.object,
       this.saturationCanvas
     );
-    this.setState({selectedColor: getColorFromCanvas(x, y, this.saturationCanvas)});
+    let selectedColor = getColorFromCanvas(x, y, this.saturationCanvas);
+    this.setState({selectedColor});
+    this.props.changeColor(selectedColor);
   }
 
   render() {
@@ -95,10 +105,31 @@ class ColorPicker extends Component {
           style={{display: "none"}}
           id="saturationCanvas"
           ref={this.registerSaturationTool.bind(this)}
+          width="128"
+          height="128"
         />
       </a-entity>
     )
   }
 }
 
-export default ColorPicker;
+const mapStateToProps = ( state ) => {
+  return {
+    selectedColor: state.tools.selectedColor
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    menuAction: (event, selectedTool) => {
+      dispatch(menuActions[actionTypes.SELECT_TOOL](event, selectedTool))
+    },
+    changeColor: (selectedColor) => {
+      dispatch(toolActions[actionTypes.UPDATE_VOXEL_OPTIONS]({
+        color: `#${selectedColor.getHexString()}`
+      }))
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColorPicker);

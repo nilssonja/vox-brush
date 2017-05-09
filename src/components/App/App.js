@@ -23,8 +23,8 @@ class App extends Component {
         }
         <a-camera position="0 -0.5 0" cursor >
           <a-entity
-            position="0 0 -1"
-            geometry="primitive: ring; radiusInner: 0.001; radiusOuter: 0.01"
+            position="0 0 -0.1"
+            geometry="primitive: ring; radiusInner: 0.001; radiusOuter: 0.002"
             material="color: black; shader: flat"
           />
         </a-camera>

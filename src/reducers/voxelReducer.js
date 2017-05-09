@@ -1,7 +1,9 @@
 import { actionTypes } from '../utils/constants';
-import { set } from '../utils/objUtil';
+import { set, get } from '../utils/objUtil';
+import * as THREE from 'three';
 
 const defaultVoxels = {
+  selectedColor: new THREE.Color(),
   at: {
     '-4': {
       0: {
@@ -22,10 +24,12 @@ const defaultVoxels = {
 export default function voxels(voxels = defaultVoxels, action) {
   switch(action.type) {
     case actionTypes.ADD_VOXEL:
-      console.log(action.event.detail.intersection);
       return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, action.voxelOptions);
-    case actionTypes.UPDATE_VOXEL:
-      return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, action.voxelOptions);
+      case actionTypes.UPDATE_VOXEL:
+      let voxel = get(`at.${action.z}.${action.y}.${action.x}`, { ...voxels });
+      return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, {...voxel, ...voxels.voxelOptions});
+      case actionTypes.UPDATE_VOXEL_OPTIONS:
+      return set(`voxelOptions`, { ...voxels }, { ...voxels.voxelOptions, ...action.voxelOptions });
     default:
       return voxels;
   }

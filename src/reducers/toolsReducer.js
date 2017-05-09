@@ -1,7 +1,9 @@
 import { actionTypes } from '../utils/constants';
+import * as THREE from 'three';
 
 const defaultTools = {
-  selectedTool: actionTypes.ADD_VOXEL
+  selectedTool: actionTypes.ADD_VOXEL,
+  selectedColor: new THREE.Color()
 };
 
 export default function tools(tools = defaultTools, action) {
