@@ -3,7 +3,7 @@ import { set, get } from '../utils/objUtil';
 import * as THREE from 'three';
 
 const defaultVoxels = {
-  selectedColor: new THREE.Color(),
+  voxelOptions: {color: new THREE.Color()},
   at: {
     '-4': {
       0: {

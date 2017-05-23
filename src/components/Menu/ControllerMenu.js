@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux'
 import ColorPicker from '../ColorPicker/ColorPicker';
+import Toolbar from '../Toolbar/Toolbar';
 import 'aframe';
 
-const ControllerMenu = () => {
-  return(<a-entity>
-    <a-plane scale="0.35 0.35 0.02" position="0 0.17 0" rotation="-90 0 0"
-             text="width: 2; align: center; color: black; value: Left"><ColorPicker/></a-plane>
-    <a-plane scale="0.35 0.35 0.02" position="0 -0.17 0" rotation="90 0 0"
-             text="width: 2; align: center; color: black; value: Right"><ColorPicker/></a-plane>
-    <a-plane scale="0.35 0.35 0.02" position="0.17 0 0" rotation="0 90 0"
-             text="width: 2; align: center; color: black; value: Top"><ColorPicker/></a-plane>
-    <a-plane scale="0.35 0.35 0.02" position="-0.17 0 0" rotation="0 -90 0"
-             text="width: 2; align: center; color: black; value: Bottom"><ColorPicker/></a-plane>
-    <a-plane scale="0.35 0.35 0.02" position="0 0 0.17" rotation="0 0 0"
-             text="width: 2; align: center; color: black; value: Front"><ColorPicker/></a-plane>
-    <a-plane scale="0.35 0.35 0.02" position="0 0 -0.17" rotation="-180 0 0"
-             text="width: 2; align: center; color: black; value: Back"><ColorPicker/></a-plane>
-  </a-entity>)
-};
+const ControllerMenu = (props) =>
+  <a-entity>
+    <a-box scale="0.2 0.2 0.2" color={props.selectedColor}></a-box>
+    <Toolbar/>
+    <a-plane scale="0.35 0.35 0.02" position="0 0.17 0" rotation="-90 0 0" color="grey" opacity="0.3"><ColorPicker/></a-plane>
+  </a-entity>;
+
+const mapStateToProps = (state) => {
+    return {
+      selectedColor: state.voxels.voxelOptions.color
+    }
+  };
 
 
-export default ControllerMenu;
+export default connect(mapStateToProps)(ControllerMenu);

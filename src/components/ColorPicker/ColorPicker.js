@@ -7,8 +7,6 @@ import toolActions from '../../actions/toolActions';
 import { actionTypes } from '../../utils/constants';
 import { getCanvasPosition, getColorFromCanvas } from '../../utils/utils';
 
-const getColor = ["#f00","#0f0","#00f","#fff"];
-
 class ColorPicker extends Component {
   constructor(props) {
     super(props);
