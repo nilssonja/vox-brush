@@ -6,14 +6,14 @@ const defaultVoxels = {
   voxelOptions: {color: new THREE.Color()},
   at: {
     '-4': {
-      0: {
+      '0': {
         '-1': {
           color: 'red'
         },
-        0: {
+        '0': {
           color: 'green'
         },
-        1: {
+        '1': {
           color: 'blue'
         }
       }
@@ -24,11 +24,11 @@ const defaultVoxels = {
 export default function voxels(voxels = defaultVoxels, action) {
   switch(action.type) {
     case actionTypes.ADD_VOXEL:
-      return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, action.voxelOptions);
-      case actionTypes.UPDATE_VOXEL:
+      return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, voxels.voxelOptions);
+    case actionTypes.UPDATE_VOXEL:
       let voxel = get(`at.${action.z}.${action.y}.${action.x}`, { ...voxels });
       return set(`at.${action.z}.${action.y}.${action.x}`, { ...voxels }, {...voxel, ...voxels.voxelOptions});
-      case actionTypes.UPDATE_VOXEL_OPTIONS:
+    case actionTypes.UPDATE_VOXEL_OPTIONS:
       return set(`voxelOptions`, { ...voxels }, { ...voxels.voxelOptions, ...action.voxelOptions });
     default:
       return voxels;

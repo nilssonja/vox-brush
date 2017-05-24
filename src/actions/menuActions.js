@@ -1,10 +1,9 @@
 import { actionTypes } from '../utils/constants';
 
-const selectTool = (event, selectedTool) => {
+export const selectTool = (selectedTool) => {
   return{
     type: actionTypes.SELECT_TOOL,
-    selectedTool: selectedTool,
-    event
+    selectedTool: selectedTool
   }
 };
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as THREE from 'three';
 import 'aframe';
 import { connect } from 'react-redux';
-import menuActions from '../../actions/menuActions';
 import toolActions from '../../actions/toolActions';
 import { actionTypes } from '../../utils/constants';
 import { getCanvasPosition, getColorFromCanvas } from '../../utils/utils';
@@ -11,7 +10,6 @@ class ColorPicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuAction: props.menuAction,
       selectedColor: props.selectedColor ? props.selectedColor : new THREE.Color()
     }
   }
@@ -64,7 +62,6 @@ class ColorPicker extends Component {
       event.detail.intersection.object,
       this.hueCanvas
     );
-    this.state.menuAction(event, actionTypes.UPDATE_VOXEL);
     let selectedColor = getColorFromCanvas(x, y, this.hueCanvas);
     this.setState({selectedColor});
     this.props.changeColor(selectedColor);
@@ -119,9 +116,6 @@ const mapStateToProps = ( state ) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    menuAction: (event, selectedTool) => {
-      dispatch(menuActions[actionTypes.SELECT_TOOL](event, selectedTool))
-    },
     changeColor: (selectedColor) => {
       dispatch(toolActions[actionTypes.UPDATE_VOXEL_OPTIONS]({
         color: `#${selectedColor.getHexString()}`
