@@ -16,7 +16,7 @@ class App extends Component {
       <a-scene style={{position: 'absolute', height: '100%', width: '100%'}} inspector stats>
         <TrackedControllers/>
         <a-sky color="#999"/>
-        <a-plane color="black" onClick={this.clickHandler.bind(this)} position="0 -0.5 0" rotation="-90 0 0" scale="100 100 0"/>
+        <a-plane color="black" onClick={this.clickHandler.bind(this)} rotation="-90 0 0" scale="100 100 0"/>
         {
           Object.keys(this.props.grids)
             .map( gridName => ({ gridName, grid: this.props.grids[gridName] }))
@@ -32,7 +32,7 @@ class App extends Component {
             />
           )
         }
-        <a-camera position="0 -0.5 0" cursor >
+        <a-camera cursor >
           <a-entity
             position="0 0 -0.1"
             geometry="primitive: ring; radiusInner: 0.001; radiusOuter: 0.002"

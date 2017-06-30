@@ -8,7 +8,6 @@ const addVoxel = (event, voxelOptions, gridName) => {
   const center = event.detail.intersection.object.getWorldPosition().clone();
   const intersection = event.detail.intersection.point.clone();
   const newPos = getAxialVector(center, normal, intersection);
-  console.log(intersection);
   return {
     type: actionTypes.ADD_VOXEL,
     event,
@@ -20,6 +19,9 @@ const addVoxel = (event, voxelOptions, gridName) => {
 
 const updateVoxel = (event, voxelOptions, gridName) => {
   const position = event.target.getAttribute('position');
+  position.x -= 0.5;
+  position.y -= 0.5;
+  position.z -= 0.5;
   return {
     type: actionTypes.UPDATE_VOXEL,
     event,
