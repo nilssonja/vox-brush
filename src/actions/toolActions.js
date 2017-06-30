@@ -1,31 +1,31 @@
 import { actionTypes } from '../utils/constants';
 import * as THREE from 'three';
 
-const addVoxel = (event, voxelOptions) => {
+const addVoxel = (event, voxelOptions, gridName) => {
   // we should probably do some calculation stuff here and return an object with more specific information
   // so that we don't have to write the calculation in the reducer for every tool action we might have.
-  const normal = event.detail.intersection.face.normal;
-  const point = event.detail.intersection.object.getWorldPosition();
-  const newPos = getAxialVector(point, normal);
+  const normal = event.detail.intersection.face.normal.clone();
+  const center = event.detail.intersection.object.getWorldPosition().clone();
+  const intersection = event.detail.intersection.point.clone();
+  const newPos = getAxialVector(center, normal, intersection);
+  console.log(intersection);
   return {
     type: actionTypes.ADD_VOXEL,
     event,
     voxelOptions: { ...voxelOptions },
-    x: newPos.x,
-    y: newPos.y,
-    z: newPos.z
+    gridName,
+    position: intersection
   }
 };
 
-const updateVoxel = (event, voxelOptions) => {
-  const pos = event.target.getAttribute('position');
+const updateVoxel = (event, voxelOptions, gridName) => {
+  const position = event.target.getAttribute('position');
   return {
     type: actionTypes.UPDATE_VOXEL,
     event,
     voxelOptions: { ...voxelOptions},
-    x: pos.x,
-    y: pos.y,
-    z: pos.z
+    gridName,
+    position
   }
 };
 
@@ -45,8 +45,24 @@ const toolActions = {
 
 export default toolActions;
 
-const getAxialVector = function(targetPos, normal){
-  let center = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z);
+const getAxialVector = function(center, normal){
   center.addVectors(center, normal);
   return { x:center.x, y:center.y, z:center.z };
 };
+
+// const getAxialVector = function(center, normal, intersection, voxelSize=1){
+//   console.log('intersection: ', intersection);
+//   console.log('normal: ', normal);
+//   intersection.add(normal.multiplyScalar(voxelSize/2));
+//   intersection.divideScalar(voxelSize);
+//   intersection.floor();
+//   intersection.multiplyScalar(voxelSize * 1.5);
+//
+//   console.log('newpos: ', intersection);
+//
+//   return {
+//     x:`${intersection.x}`,
+//     y:`${intersection.y}`,
+//     z:`${intersection.z}`
+//   };
+// };

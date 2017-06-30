@@ -55,3 +55,5 @@ export const getColorFromCanvas = (x, y, canvas) => {
   let colorArray = ctx.getImageData(Math.floor(x), Math.floor(y),1,1).data;
   return new THREE.Color(`rgb(${colorArray[0]},${colorArray[1]},${colorArray[2]})`);
 };
+
+export const stringifyVector = (vector) => `${vector.x} ${vector.y} ${vector.z}`;

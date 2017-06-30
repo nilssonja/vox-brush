@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import toolActions from '../../actions/toolActions';
 import 'aframe';
 
-const Voxel = ( props ) =>
-  <a-box
-    { ...props }
-    onClick={ (event) => props.toolAction(event, props, props.selectedTool) }
-  />;
+const Voxel = ( {voxelOptions, selectedTool, isClickable, toolAction, gridName} ) =>
+  isClickable ?
+    <a-box
+      { ...voxelOptions }
+      onClick={ (event) => toolAction(event, voxelOptions, selectedTool, gridName) }
+    /> : <a-box { ...voxelOptions } />;
+
 
 const mapStateToProps = ( state ) => {
   return {
@@ -17,7 +19,8 @@ const mapStateToProps = ( state ) => {
 
 const mapDispatchToProps = ( dispatch ) => {
   return {
-    toolAction: (event, voxelOptions, selectedTool) => dispatch(toolActions[selectedTool](event, voxelOptions))
+    toolAction: (event, voxelOptions, selectedTool, gridName) =>
+      dispatch(toolActions[selectedTool](event, voxelOptions, gridName))
   }
 };
 

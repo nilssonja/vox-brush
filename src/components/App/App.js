@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import Voxel from '../Voxel/Voxel';
-import { getVoxels } from '../../reducers/voxelReducer';
 import toolActions from '../../actions/toolActions';
 import TrackedControllers from '../TrackedControllers/TrackedControllers';
+import Grid from '../Grid/Grid';
 import { connect } from 'react-redux';
 import 'aframe';
 import './App.css';
 
 class App extends Component {
   clickHandler(event) {
-    this.props.toolAction(event, {}, this.props.selectedTool);
+    this.props.toolAction(event, {}, this.props.selectedTool, this.props.selectedGrid);
   }
 
   render() {
@@ -19,7 +18,19 @@ class App extends Component {
         <a-sky color="#999"/>
         <a-plane color="black" onClick={this.clickHandler.bind(this)} position="0 -0.5 0" rotation="-90 0 0" scale="100 100 0"/>
         {
-          getVoxels(this.props.voxels).map((voxelOptions, index) => <Voxel { ...voxelOptions } key={ index } />)
+          Object.keys(this.props.grids)
+            .map( gridName => ({ gridName, grid: this.props.grids[gridName] }))
+            .map(({ gridName, grid }, index) =>
+            <Grid
+              key={ index }
+              voxels={ grid.voxels }
+              isSelected={ gridName === this.props.selectedGrid }
+              position={ grid.position }
+              rotation={ grid.rotation }
+              scale={ grid.scale }
+              gridName={ gridName }
+            />
+          )
         }
         <a-camera position="0 -0.5 0" cursor >
           <a-entity
@@ -35,14 +46,15 @@ class App extends Component {
 
 const mapStateToProps = ( state ) => {
   return {
-    voxels: state.voxels,
+    grids: state.voxels.grids,
+    selectedGrid: state.voxels.selectedGrid,
     selectedTool: state.tools.selectedTool
   };
 };
 
 const mapDispatchToProps = ( dispatch, props ) => {
   return {
-    toolAction: (event, voxelOptions, selectedTool) => dispatch(toolActions[selectedTool](event, voxelOptions))
+    toolAction: (event, voxelOptions, selectedTool, gridName) => dispatch(toolActions[selectedTool](event, voxelOptions, gridName))
   };
 };
 
