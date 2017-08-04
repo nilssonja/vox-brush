@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Voxel from '../Voxel/Voxel';
 import {getVoxels} from '../../reducers/voxelReducer';
 import { stringifyVector } from '../../utils/utils';

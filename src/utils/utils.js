@@ -1,27 +1,12 @@
 import * as THREE from 'three';
 
-// this function takes an intersect position, the plane that is being intersected, and the canvas responsible for the plane's texture
-// this function returns the x and y position of the canvas relative to the position passed in
-export const getCanvasPosition = (position, plane, canvas) => {
-  //for some reason, this only works when the canvas has the same width and height.
-  let globalVerts = getGlobalVerts(plane);
-  let triangle = new THREE.Triangle(globalVerts[0], globalVerts[1], position);
-  let base = globalVerts[0].distanceTo(globalVerts[1]);
-  let hype = globalVerts[0].distanceTo(position);
-  let totalHeight = globalVerts[0].distanceTo(globalVerts[2]);
-  let height = 2 * (triangle.area() / base);
-  let width = Math.sqrt(Math.pow(hype,2) - Math.pow(height,2));
-  let y = (width/base) * canvas.width;
-  let x = (height/totalHeight) * canvas.height;
-  return {x, y};
-};
 
-// this function returns a list of THREE.Vertex3 with positions in the global scope for the given object 
+// this function returns a list of THREE.Vertex3 with positions in the global scope for the given object
 export const getGlobalVerts = (object) => {
   const objPosition = object.getWorldPosition();
   const objScale = object.getWorldScale();
   const objQuaternion = object.getWorldQuaternion();
-  
+
   return object.geometry.attributes.position.array
     .reduce((acc, value, index)=>{
       if( (index % 3) === 0 ) {
@@ -37,6 +22,22 @@ export const getGlobalVerts = (object) => {
       vector.add(objPosition);
       return vector;
     });
+};
+
+// this function takes an intersect position, the plane that is being intersected, and the canvas responsible for the plane's texture
+// this function returns the x and y position of the canvas relative to the position passed in
+export const getCanvasPosition = (position, plane, canvas) => {
+  //for some reason, this only works when the canvas has the same width and height.
+  let globalVerts = getGlobalVerts(plane);
+  let triangle = new THREE.Triangle(globalVerts[0], globalVerts[1], position);
+  let base = globalVerts[0].distanceTo(globalVerts[1]);
+  let hype = globalVerts[0].distanceTo(position);
+  let totalHeight = globalVerts[0].distanceTo(globalVerts[2]);
+  let height = 2 * (triangle.area() / base);
+  let width = Math.sqrt(Math.pow(hype,2) - Math.pow(height,2));
+  let y = (width/base) * canvas.width;
+  let x = (height/totalHeight) * canvas.height;
+  return {x, y};
 };
 
 // this function creates a small box at the given position in the global context. useful for debugging math
