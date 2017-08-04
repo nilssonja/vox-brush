@@ -1,5 +1,6 @@
 import { actionTypes } from '../utils/constants';
 import { set, get } from '../utils/objUtil';
+import { degToRad } from '../utils/utils';
 import * as THREE from 'three';
 
 const defaultVoxels = {
@@ -33,7 +34,7 @@ export default function voxels(voxels = defaultVoxels, action) {
   let path;
   switch(action.type) {
     case actionTypes.ADD_VOXEL:
-      const {x, y, z} = getGridCell(action.position, voxels.grids[action.gridName]);
+      const {x, y, z} = getGridCell({position: action.position, grid: voxels.grids[action.gridName], normal: action.normal});
       path = `grids.${action.gridName}.voxels.${z}.${y}.${x}`;
       return set(path, { ...voxels }, voxels.voxelOptions);
     case actionTypes.UPDATE_VOXEL:
@@ -56,14 +57,18 @@ export function getVoxels(voxels) { //have to do some crazy array stuff to get a
         })))))));
 }
 
-const getGridCell = ( position={x:0, y:0, z:0}, grid ) => {
+const getGridCell = ( {position={x:0, y:0, z:0}, grid, normal={x:0, y:0, z:0}} ) => {
   position = new THREE.Vector3(position.x, position.y, position.z);
+  normal = new THREE.Vector3(normal.x, normal.y, normal.z);
   if(grid) {
-    let gridRotation = new THREE.Euler( grid.rotation.x, grid.rotation.y, grid.rotation.z, 'XYZ' );
+    let gridRads = degToRad(grid.rotation);
+    let gridRotation = new THREE.Euler( gridRads.x, gridRads.y, gridRads.z, 'XYZ' );
     let quaternion = new THREE.Quaternion();
     quaternion.setFromEuler(gridRotation);
+    let halfScale = new THREE.Vector3(grid.scale.x, grid.scale.y, grid.scale.z).multiplyScalar(0.5);
+    normal.multiply(halfScale);
 
-
+    position.addVectors(position, normal);
     position.subVectors(position, grid.position);
     position.applyQuaternion(quaternion.inverse());
     position.divide(grid.scale);

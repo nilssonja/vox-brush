@@ -16,7 +16,7 @@ class App extends Component {
       <a-scene style={{position: 'absolute', height: '100%', width: '100%'}} inspector stats>
         <TrackedControllers/>
         <a-sky color="#999"/>
-        <a-plane color="black" onClick={this.clickHandler.bind(this)} rotation="-90 0 0" scale="100 100 0"/>
+        <a-plane id="ground" color="black" onClick={this.clickHandler.bind(this)} rotation="-90 0 0" scale="100 100 0"/>
         {
           Object.keys(this.props.grids)
             .map( gridName => ({ gridName, grid: this.props.grids[gridName] }))

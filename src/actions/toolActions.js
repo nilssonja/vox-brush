@@ -1,19 +1,26 @@
 import { actionTypes } from '../utils/constants';
+import { degToRad } from '../utils/utils';
 import * as THREE from 'three';
 
 const addVoxel = (event, voxelOptions, gridName) => {
   // we should probably do some calculation stuff here and return an object with more specific information
   // so that we don't have to write the calculation in the reducer for every tool action we might have.
   const normal = event.detail.intersection.face.normal.clone();
-  const center = event.detail.intersection.object.getWorldPosition().clone();
+  // const center = event.detail.intersection.object.getWorldPosition().clone();
+  let rotation = event.target.getAttribute('rotation');
+  rotation = degToRad(rotation);
+  const euler = new THREE.Euler(rotation.x, rotation.y, rotation.z, "XYZ");
+  let quaternion = new THREE.Quaternion();
+  quaternion.setFromEuler(euler);
+  normal.applyQuaternion(quaternion);
   const intersection = event.detail.intersection.point.clone();
-  const newPos = getAxialVector(center, normal, intersection);
   return {
     type: actionTypes.ADD_VOXEL,
     event,
     voxelOptions: { ...voxelOptions },
     gridName,
-    position: intersection
+    position: intersection,
+    normal
   }
 };
 
@@ -46,25 +53,3 @@ const toolActions = {
 };
 
 export default toolActions;
-
-const getAxialVector = function(center, normal){
-  center.addVectors(center, normal);
-  return { x:center.x, y:center.y, z:center.z };
-};
-
-// const getAxialVector = function(center, normal, intersection, voxelSize=1){
-//   console.log('intersection: ', intersection);
-//   console.log('normal: ', normal);
-//   intersection.add(normal.multiplyScalar(voxelSize/2));
-//   intersection.divideScalar(voxelSize);
-//   intersection.floor();
-//   intersection.multiplyScalar(voxelSize * 1.5);
-//
-//   console.log('newpos: ', intersection);
-//
-//   return {
-//     x:`${intersection.x}`,
-//     y:`${intersection.y}`,
-//     z:`${intersection.z}`
-//   };
-// };

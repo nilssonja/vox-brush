@@ -57,3 +57,19 @@ export const getColorFromCanvas = (x, y, canvas) => {
 };
 
 export const stringifyVector = (vector) => `${vector.x} ${vector.y} ${vector.z}`;
+
+export const degToRad = (rotation) => Object.keys(rotation)
+  .map(key => ({key, value: rotation[key]}))
+  .map(({key, value}) => ({key, value: (Math.PI / 180) * value}))
+  .reduce((acc, {key, value}) => {
+    acc[key] = value;
+    return acc;
+  }, {});
+
+export const radToDeg = (rotation) => Object.keys(rotation)
+  .map(key => ({key, value: rotation[key]}))
+  .map(({key, value}) => ({key, value: (180 / Math.PI) * value}))
+  .reduce((acc, {key, value}) => {
+    acc[key] = value;
+    return acc;
+  }, {});
